@@ -34,11 +34,16 @@ dependencies = [
 dev = ["pytest", "matplotlib", "ruff", "pytest-asyncio"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["lazyimread"]
+packages = ["src/lazyimread"]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
-testpaths = ["tests"]
+pythonpath = [
+  ".",
+  "src"
+]
+testpaths = [
+  "tests"
+]
 
 [tool.ruff]
 line-length = 100

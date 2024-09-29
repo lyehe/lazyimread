@@ -105,12 +105,12 @@ def generate_multi_dataset_hdf5(output_path: Path) -> None:
     """
     logger.info(f"Generating multi-dataset HDF5 file: {output_path}")
     with h5py.File(output_path, "w") as f:
-        f.create_dataset("dataset1", data=np.random.rand(50, 512, 512))
-        f.create_dataset("dataset2", data=np.random.rand(50, 512, 512, 3))
+        f.create_dataset("dataset1", data=np.random.rand(50, 128, 128))
+        f.create_dataset("dataset2", data=np.random.rand(50, 128, 128, 3))
 
         group1 = f.create_group("group1")
         group1.create_dataset("dataset3", data=np.random.rand(10, 10, 10, 10))
-        group1.create_dataset("dataset4", data=np.random.rand(50, 50, 512, 512, 3))
+        group1.create_dataset("dataset4", data=np.random.rand(50, 50, 128, 128, 3))
 
         group2 = f.create_group("group2")
         group2.create_dataset("dataset5", data=np.random.rand(10, 10, 10, 10))
@@ -126,8 +126,8 @@ def generate_multi_dataset_zarr(output_path: Path) -> None:
     root = zarr.open(str(output_path), mode="w")
     if not isinstance(root, zarr.Group):
         raise TypeError("Expected zarr.Group")
-    root.create_dataset("dataset1", data=np.random.rand(50, 512, 512))
-    root.create_dataset("dataset2", data=np.random.rand(50, 512, 512, 3))
+    root.create_dataset("dataset1", data=np.random.rand(50, 128, 128))
+    root.create_dataset("dataset2", data=np.random.rand(50, 128, 128, 3))
 
     group1 = root.create_group("group1")
     group1.create_dataset("dataset3", data=np.random.rand(10, 10, 10, 10))
@@ -135,12 +135,12 @@ def generate_multi_dataset_zarr(output_path: Path) -> None:
 
     group2 = root.create_group("group2")
     group2.create_dataset("dataset5", data=np.random.rand(10, 10, 10, 10))
-    group2.create_dataset("dataset6", data=np.random.rand(50, 50, 512, 512, 3))
+    group2.create_dataset("dataset6", data=np.random.rand(50, 50, 128, 128, 3))
 
 
 def generate_test_data(
     output_dir: Path,
-    shape: Tuple[int, int] = (512, 512),
+    shape: Tuple[int, int] = (128, 128),
     z_size: int = 50,
     t_size: int = 50,
     c_size: int = 3,

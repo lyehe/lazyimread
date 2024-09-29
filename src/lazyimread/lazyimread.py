@@ -201,7 +201,7 @@ class ImageFolderLoader(DataLoader):
 
             for i, img_file in enumerate(image_files[t_start:t_stop]):
                 logger.debug(f"Loading image: {img_file}")
-                img, _ = cv2.imread(str(img_file))
+                img = cv2.imread(str(img_file))
                 if img is None:
                     raise OSError(f"Unable to open image file: {img_file}")
                 if is_color:

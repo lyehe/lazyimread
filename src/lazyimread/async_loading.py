@@ -1,7 +1,5 @@
 """Asynchronous loading functionality."""
 
-from __future__ import annotations
-
 import asyncio
 from logging import getLogger
 from pathlib import Path

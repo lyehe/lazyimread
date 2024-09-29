@@ -1,12 +1,10 @@
 """Utility functions for saving data."""
 
-from __future__ import annotations
-
+from collections.abc import Callable
 from enum import Enum, auto
 from json import dump
 from logging import getLogger
 from pathlib import Path
-from typing import Callable
 
 import numpy as np
 import zarr

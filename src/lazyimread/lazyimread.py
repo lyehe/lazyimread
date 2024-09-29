@@ -1,6 +1,4 @@
-"""Core functionality for lazy image reading and writing."""
-
-from __future__ import annotations
+"""Lazy image reading library."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -78,7 +76,9 @@ def configure_load_options(
     """
     ranges = {
         dim: range_val
-        for dim, range_val in zip("TZXYC", (t_range, z_range, x_range, y_range, c_range))
+        for dim, range_val in zip(
+            "TZXYC", (t_range, z_range, x_range, y_range, c_range), strict=True
+        )
         if range_val is not None
     }
 

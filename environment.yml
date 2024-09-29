@@ -1,0 +1,21 @@
+# Micromamba environment file
+# https://marketplace.visualstudio.com/items?itemName=corker.vscode-micromamba
+
+name: binomial_sampler
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - numpy
+  - tifffile
+  - h5py
+  - matplotlib
+  - pytest
+  - zarr
+  - xmltodict
+  - pip
+  - pip:
+      - opencv-python

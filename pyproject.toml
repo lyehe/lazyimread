@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lazyimread"
+version = "0.1.0"
+description = "A lazy image reading library for various file formats"
+authors = [{ name = "Yehe Liu", email = "yehe@case.edu" }]
+license = { text = "The Unlicense (Unlicense)" }
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: The Unlicense (Unlicense)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "tifffile",
+    "h5py",
+    "zarr",
+    "xmltodict",
+]
+
+
+[project.optional-dependencies]
+dev = ["pytest", "matplotlib", "ruff"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["lazyimread"]
+
+[tool.pytest.ini_options]
+markers = ["asyncio: mark test as an asyncio coroutine"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py37"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "C4",
+    "T20",
+    "PT",
+    "Q",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["lazyimread"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

@@ -2,7 +2,7 @@
 
 LazyImRead is a Python library for lazy loading and processing of various image file formats, including TIFF, HDF5, Zarr, and video files. It provides efficient handling of large multi-dimensional image datasets with minimal memory footprint.
 
-![CI](https://github.com/your-username/lazyimread/workflows/CI/badge.svg)
+![CI](https://github.com/lyehe/lazyimread/workflows/CI/badge.svg)
 [![PyPI version](https://badge.fury.io/py/lazyimread.svg)](https://badge.fury.io/py/lazyimread)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/lazyimread.svg)](https://pypi.org/project/lazyimread/)

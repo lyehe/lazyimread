@@ -14,8 +14,7 @@ from lazyimread import (
     async_load,
     configure_load_options,
 )
-
-from .dummy_data_generator import generate_test_data
+from tests.dummy_data_generator import generate_test_data
 
 
 @pytest.fixture(scope="module")

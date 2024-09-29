@@ -2,6 +2,11 @@
 
 LazyImRead is a Python library for lazy loading and processing of various image file formats, including TIFF, HDF5, Zarr, and video files. It provides efficient handling of large multi-dimensional image datasets with minimal memory footprint.
 
+![CI](https://github.com/your-username/lazyimread/workflows/CI/badge.svg)
+[![PyPI version](https://badge.fury.io/py/lazyimread.svg)](https://badge.fury.io/py/lazyimread)
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/lazyimread.svg)](https://pypi.org/project/lazyimread/)
+
 ## Features:
 
 - Lazy loading of large image datasets
@@ -15,13 +20,16 @@ LazyImRead is a Python library for lazy loading and processing of various image 
 
 You can install LazyImRead using pip:
 
-```
+```bash
 pip install lazyimread
+
+# Install from GitHub
+pip install git+https://github.com/your-username/lazyimread.git
 ```
 
 For development installation, clone the repository and install in editable mode:
 
-```
+```bash
 git clone https://github.com/your-username/lazyimread.git
 cd lazyimread
 pip install -e .
@@ -31,7 +39,7 @@ pip install -e .
 
 ### 1. Basic loading:
 
-```
+```python
 from lazyimread import load
 
 data, dim_order, metadata = load('path/to/your/file.tiff')
@@ -39,7 +47,7 @@ data, dim_order, metadata = load('path/to/your/file.tiff')
 
 ### 2. Configuring load options:
 
-```
+```python
 from lazyimread import configure_load_options, load
 
 options = configure_load_options(t_range=(0, 10), z_range=(5, 15), target_order='TZYXC')
@@ -48,7 +56,7 @@ data, dim_order, metadata = load('path/to/your/file.h5', options)
 
 ### 3. Rearranging dimensions:
 
-```
+```python
 from lazyimread import load, rearrange_dimensions
 
 data, dim_order, metadata = load('path/to/your/file.zarr')
@@ -57,7 +65,7 @@ rearranged_data, new_order = rearrange_dimensions(data, dim_order, 'TZCYX')
 
 ### 4. Saving data:
 
-```
+```python
 from lazyimread import save_tiff
 save_tiff(data, 'output.tiff', dim_order='TZCYX')
 ```

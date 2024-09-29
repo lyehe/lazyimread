@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Tuple
 
 import cv2
 import h5py
@@ -15,22 +14,22 @@ import zarr
 logger = logging.getLogger(__name__)
 
 
-def generate_2d_array(shape: Tuple[int, int]) -> np.ndarray:
+def generate_2d_array(shape: tuple[int, int]) -> np.ndarray:
     """Generate a 2D array of random integers."""
     return np.random.randint(0, 256, shape, dtype=np.uint8)
 
 
-def generate_3d_array(shape: Tuple[int, int, int]) -> np.ndarray:
+def generate_3d_array(shape: tuple[int, int, int]) -> np.ndarray:
     """Generate a 3D array of random integers."""
     return np.random.randint(0, 256, shape, dtype=np.uint8)
 
 
-def generate_4d_array(shape: Tuple[int, int, int, int]) -> np.ndarray:
+def generate_4d_array(shape: tuple[int, int, int, int]) -> np.ndarray:
     """Generate a 4D array of random integers."""
     return np.random.randint(0, 256, shape, dtype=np.uint8)
 
 
-def generate_5d_array(shape: Tuple[int, int, int, int, int]) -> np.ndarray:
+def generate_5d_array(shape: tuple[int, int, int, int, int]) -> np.ndarray:
     """Generate a 5D array of random integers."""
     return np.random.randint(0, 256, shape, dtype=np.uint8)
 
@@ -142,7 +141,7 @@ def generate_multi_dataset_zarr(output_path: Path) -> None:
 
 def generate_test_data(
     output_dir: Path,
-    shape: Tuple[int, int] = (128, 128),
+    shape: tuple[int, int] = (128, 128),
     z_size: int = 50,
     t_size: int = 50,
     c_size: int = 3,
@@ -150,7 +149,7 @@ def generate_test_data(
     """Generate test data with various dimensions and save in different formats.
 
     :param output_dir: Path to the directory where test data will be saved
-    :param shape: Tuple of (height, width) for 2D arrays
+    :param shape: tuple of (height, width) for 2D arrays
     :param z_size: Size of the Z dimension for 3D and higher dimensional arrays
     :param t_size: Size of the T (time) dimension for time series data
     :param c_size: Size of the C (channel) dimension for multi-channel data

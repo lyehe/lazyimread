@@ -15,8 +15,6 @@ classifiers = [
     "License :: OSI Approved :: The Unlicense (Unlicense)",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -41,9 +39,7 @@ packages = ["lazyimread"]
 [tool.pytest.ini_options]
 markers = ["asyncio: mark test as an asyncio coroutine"]
 asyncio_mode = "auto"
-pythonpath = [
-  "src"
-]
+pythonpath = ["src", "tests", "."]
 
 [tool.ruff]
 line-length = 100

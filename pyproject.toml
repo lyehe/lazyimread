@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lazyimread"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lazy image reading library for various file formats"
 authors = [{ name = "Yehe Liu", email = "yehe@case.edu" }]
 license = { text = "The Unlicense (Unlicense)" }
@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "numpy",
     "opencv-python",
@@ -37,18 +37,13 @@ dev = ["pytest", "matplotlib", "ruff", "pytest-asyncio"]
 packages = ["src/lazyimread"]
 
 [tool.pytest.ini_options]
-pythonpath = [
-  ".",
-  "src"
-]
-testpaths = [
-  "tests"
-]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
 asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 100
-target-version = "py37"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [

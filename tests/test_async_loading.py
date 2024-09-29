@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from src.lazyimread import (
+from lazyimread import (
     LoadOptions,
     async_imread,
     async_lazyload,

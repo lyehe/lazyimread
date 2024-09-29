@@ -41,6 +41,9 @@ packages = ["lazyimread"]
 [tool.pytest.ini_options]
 markers = ["asyncio: mark test as an asyncio coroutine"]
 asyncio_mode = "auto"
+pythonpath = [
+  "src"
+]
 
 [tool.ruff]
 line-length = 100

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from src.lazyimread import LoadOptions, configure_load_options, lazyload
+from lazyimread import LoadOptions, configure_load_options, lazyload
 from tests.dummy_data_generator import generate_test_data
 
 

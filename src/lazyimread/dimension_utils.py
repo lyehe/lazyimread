@@ -1,5 +1,7 @@
 """Utility functions for handling image data dimensions."""
 
+from __future__ import annotations
+
 from enum import Enum, auto
 from logging import getLogger
 

@@ -48,7 +48,9 @@ Or feel free to copy and paste the code into your project / data analysis pipeli
 
 ## Usage Examples:
 
-You can find more examples in the [examples.ipynb](https://githubtocolab.com/lyehe/lazyimread/blob/main/example.ipynb). Click the link to open in Google Colab.
+You can find more examples in the [examples.ipynb](https://github.com/lyehe/lazyimread/blob/main/example.ipynb)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://githubtocolab.com/lyehe/lazyimread/blob/main/example.ipynb)
 
 ### 1. Basic loading:
 

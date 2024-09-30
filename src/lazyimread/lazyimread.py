@@ -711,16 +711,17 @@ def load(
 def imread(
     input_path: Path,
     options: LoadOptions | None = None,
-) -> tuple[np.ndarray, str, dict | None]:
+) -> np.ndarray:
     """Alias for lazyload function, mimicking the common imread function name.
 
     This allows for easier transition from other image reading libraries.
 
     :param input_path: Path to the input file
     :param options: LoadOptions instance with loading parameters
-    :return: Tuple of (data, dimension order, metadata)
+    :return: Numpy array containing the loaded image data
     """
-    return lazyload(input_path, options)
+    data, _, _ = lazyload(input_path, options)
+    return data
 
 
 def imsave(

@@ -1,16 +1,18 @@
 """Lazy image reading and writing library."""
 
-from .async_loading import aload
+from .async_utils import aload
 from .dimension_utils import (
     predict_dimension_order,
     rearrange_dimensions,
     translate_dimension_names,
 )
-from .gui_load import (
+from .gui_utils import (
+    gdir,
+    gdirload,
     gload,
     gpath,
-    gsave,
     gset,
+    gsetdirload,
     gsetload,
 )
 from .lazyimread import (
@@ -29,7 +31,6 @@ from .lazyimread import (
     save_options,
 )
 from .saving_utils import (
-    SaveFactory,
     save_folder,
     save_hdf5,
     save_tiff,
@@ -56,16 +57,17 @@ __all__ = [
     "aload",
     "aload",
     "aload",
-    "SaveFactory",
     "save_folder",
     "save_hdf5",
     "save_tiff",
     "save_zarr",
     "gpath",
+    "gdir",
     "gload",
+    "gdirload",
     "gset",
-    "gsave",
     "gsetload",
+    "gsetdirload",
 ]
 
 __version__ = "0.1.1"

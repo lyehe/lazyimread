@@ -1,7 +1,7 @@
 # Micromamba environment file
 # https://marketplace.visualstudio.com/items?itemName=corker.vscode-micromamba
 
-name: binomial_sampler
+name: lazyimread
 
 channels:
   - conda-forge

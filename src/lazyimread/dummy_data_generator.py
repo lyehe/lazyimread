@@ -108,7 +108,7 @@ def generate_multi_dataset_hdf5(output_path: Path) -> None:
         f.create_dataset("dataset2", data=np.random.rand(50, 128, 128, 3))
 
         group1 = f.create_group("group1")
-        group1.create_dataset("dataset3", data=np.random.rand(10, 10, 10, 10))
+        group1.create_dataset("dataset3", data=np.random.rand(10, 10, 128, 128))
         group1.create_dataset("dataset4", data=np.random.rand(50, 50, 128, 128, 3))
 
         group2 = f.create_group("group2")
@@ -129,7 +129,7 @@ def generate_multi_dataset_zarr(output_path: Path) -> None:
     root.create_dataset("dataset2", data=np.random.rand(50, 128, 128, 3))
 
     group1 = root.create_group("group1")
-    group1.create_dataset("dataset3", data=np.random.rand(10, 10, 10, 10))
+    group1.create_dataset("dataset3", data=np.random.rand(10, 10, 128, 128))
     group1.create_dataset("dataset4", data=np.random.rand(10, 10, 10, 10, 3))
 
     group2 = root.create_group("group2")

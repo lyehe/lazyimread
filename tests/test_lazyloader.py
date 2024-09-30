@@ -357,7 +357,7 @@ def test_load_hdf5_multi_dataset(test_data_dir: Path) -> None:
     # Test loading a dataset from a group using string selectors
     options = LoadOptions(group="group1", dataset="dataset3")
     data, dim_order, metadata = lazyload(file_path, options)
-    assert data.shape == (10, 10, 10, 10)
+    assert data.shape == (10, 10, 128, 128)
     assert dim_order == "TZXY"
 
     # Test loading a large dataset from a group using string selectors
@@ -387,7 +387,7 @@ def test_load_zarr_multi_dataset(test_data_dir: Path) -> None:
     # Test loading a dataset from a group using string selectors
     options = LoadOptions(group="group1", dataset="dataset3")
     data, dim_order, metadata = lazyload(file_path, options)
-    assert data.shape == (10, 10, 10, 10)
+    assert data.shape == (10, 10, 128, 128)
     assert dim_order == "TZXY"
 
     # Test loading a large dataset from a group using string selectors

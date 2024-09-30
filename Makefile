@@ -13,6 +13,13 @@ help:
 	@echo "  type-check  - Run type checking"
 	@echo "  clean       - Remove build artifacts and cache files"
 	@echo "  ci          - Run all checks (test, lint, format, type-check)"
+	@echo "  tox         - Run tests with tox"
+	@echo "  tox-test    - Run tests with tox"
+	@echo "  tox-lint    - Run linting with tox"
+	@echo "  build       - Build the package"
+	@echo "  upload-pypi - Upload the package to PyPI"
+	@echo "  release     - Clean, build, and upload the package to PyPI"
+
 
 install:
 	$(PYTHON) -m pip install -e .[dev]
@@ -38,9 +45,6 @@ clean:
 ci:
 	$(TOX) -e py310,py311,py312,lint-format-type
 
-# Tox-specific targets
-.PHONY: tox tox-test tox-lint tox-format
-
 tox:
 	$(TOX)
 
@@ -49,3 +53,12 @@ tox-test:
 
 tox-lint:
 	$(TOX) -e lint-format-type
+
+build:
+	python -m build
+
+upload-pypi:
+	python -m twine upload dist/*
+
+release: clean build upload-pypi
+	@echo "Released new version to PyPI"

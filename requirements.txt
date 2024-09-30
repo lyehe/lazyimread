@@ -2,7 +2,6 @@ numpy
 opencv-python
 tifffile
 h5py
-matplotlib
 pytest
 zarr
-PyYAML
+pyyaml

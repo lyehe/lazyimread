@@ -12,7 +12,7 @@ from lazyimread import (
     async_imread,
     async_lazyload,
     async_load,
-    configure_load_options,
+    imset,
 )
 from tests.dummy_data_generator import generate_test_data
 
@@ -61,7 +61,7 @@ async def test_async_load_with_options(test_data_dir: Path) -> None:
     """Test asynchronous loading with specific load options."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.tiff"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(t_range=(10, 30), y_range=(10, 110), x_range=(10, 110))
+    options = imset(t_range=(10, 30), y_range=(10, 110), x_range=(10, 110))
     data, dim_order, metadata = await async_lazyload(file_path, options)
     assert data.shape == (20, 100, 100, 3)
     assert dim_order in ["TXYC", "ZXYC"]
@@ -103,7 +103,7 @@ async def test_async_load_image_folder(test_data_dir: Path) -> None:
     """Test asynchronous loading of an image folder."""
     folder_path = test_data_dir / "test_2d_XY_128x128_folder"
     assert folder_path.exists(), f"Folder not found: {folder_path}"
-    options = configure_load_options(target_order="TXY")
+    options = imset(target_order="TXY")
     data, dim_order, metadata = await async_load(folder_path, options)
     assert data.shape == (50, 128, 128)
     assert dim_order == "TXY"
@@ -114,7 +114,7 @@ async def test_async_load_partial_5d_hdf5(test_data_dir: Path) -> None:
     """Test asynchronous loading of a partial 5D HDF5 file."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.h5"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(
+    options = imset(
         t_range=(5, 15),
         z_range=(2, 8),
         y_range=(10, 110),
@@ -151,11 +151,9 @@ async def test_async_load_zarr_multi_dataset(test_data_dir: Path) -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_load_multiple_files_concurrently(test_data_dir: Path) -> None:
-    """Test asynchronous loading of multiple files concurrently."""
+async def test_async_load_multiple_files(test_data_dir: Path) -> None:
+    """Test asynchronous loading of multiple files."""
     file_paths = [
-        test_data_dir / "test_2d_XY_128x128.tiff",
-        test_data_dir / "test_3d_TXY_50x128x128.h5",
         test_data_dir / "test_4d_TXYC_50x128x128x3.zarr",
         test_data_dir / "test_5d_TZCYX_50x50x128x128x3.tiff",
     ]

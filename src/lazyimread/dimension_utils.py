@@ -39,7 +39,7 @@ class DefaultDimensionOrder(Enum):
     XYC = "XYC"
     XY = "XY"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the string representation of the enum value."""
         return self.value
 
@@ -53,8 +53,8 @@ def translate_dimension_names(order: str) -> str:
     :return: Translated dimension order string
     """
     translation = {"F": "T", "D": "Z", "W": "X", "H": "Y"}
-    seen = set()
-    translated = []
+    seen: set[str] = set()
+    translated: list[str] = []
 
     for char in order:
         new_char = translation.get(char, char)
@@ -97,28 +97,23 @@ def rearrange_dimensions(
     current_order: str,
     target_order: str | None = None,
     return_order: ReturnOrder = ReturnOrder.DATA_AND_ORDER,
-) -> np.ndarray | tuple[np.ndarray, DefaultDimensionOrder]:
+) -> np.ndarray | tuple[np.ndarray, str]:
     """Rearrange the dimensions of the input data to the desired order.
 
     :param data: Input data array
     :param current_order: Current dimension order of the data
-    :param target_order: Desired dimension order. If None, predict order
+    :param target_order: Desired dimension order. If None, use default order
     :param return_order: Enum specifying whether to return only data or data and order
     :return: Rearranged data array and final order (if return_order is DATA_AND_ORDER)
     """
     current_dims = data.ndim
     logger.debug(f"The shape of the input data is {data.shape}")
 
-    if target_order:
-        target_order = translate_dimension_names(target_order)
+    if target_order is None:
+        target_order = DefaultDimensionOrder[current_order].value
+        logger.debug(f"No target order specified, using default order: {target_order}")
     else:
-        target_order = current_order
-        logger.debug(f"No target order specified, using current order: {target_order}")
-
-    valid_orders = [order.value for order in DefaultDimensionOrder]
-    if target_order not in valid_orders:
-        logger.error(f"Invalid target order: {target_order}. Must be one of {valid_orders}")
-        raise ValueError(f"Invalid target order: {target_order}. Must be one of {valid_orders}")
+        target_order = translate_dimension_names(target_order)
 
     if len(target_order) != current_dims:
         logger.error(
@@ -136,7 +131,7 @@ def rearrange_dimensions(
     logger.debug(f"The shape of the rearranged data is {rearranged_data.shape}")
 
     return (
-        (rearranged_data, DefaultDimensionOrder(target_order))
+        (rearranged_data, target_order)
         if return_order == ReturnOrder.DATA_AND_ORDER
         else rearranged_data
     )

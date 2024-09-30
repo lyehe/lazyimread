@@ -119,3 +119,24 @@ express Statement of Purpose.
  d. Affirmer understands and acknowledges that Creative Commons is not a
     party to this document and has no duty or obligation with respect to
     this CC0 or use of the Work.
+
+## License Acknowledgements
+
+This project uses the following open-source libraries:
+
+- NumPy: BSD 3-Clause License
+- OpenCV: Apache 2.0 License
+- tifffile: BSD 3-Clause License
+- h5py: BSD 3-Clause License
+- Zarr: MIT License
+- xmltodict: MIT License
+- pytest: MIT License
+- pytest-asyncio: Apache 2.0 License
+- Ruff: MIT License
+- tox: MIT License
+- pre-commit: MIT License
+- ruff-pre-commit: MIT License
+- pre-commit-hooks: MIT License
+- setuptools: MIT License
+
+We acknowledge and are grateful to these developers for their contributions to open source.

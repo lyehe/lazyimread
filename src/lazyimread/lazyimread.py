@@ -50,7 +50,7 @@ class LoadOptions:
     target_order: str | None = None
 
 
-def configure_load_options(
+def imset(
     t_range: RangeType | None = None,
     z_range: RangeType | None = None,
     x_range: RangeType | None = None,

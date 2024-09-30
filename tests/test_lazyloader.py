@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from lazyimread import LoadOptions, configure_load_options, lazyload
+from lazyimread import LoadOptions, imset, lazyload
 from tests.dummy_data_generator import generate_test_data
 
 
@@ -105,7 +105,7 @@ def test_load_with_options(test_data_dir: Path) -> None:
     """Test loading a 4D TIFF file with options."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.tiff"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(t_range=(10, 30), y_range=(10, 110), x_range=(10, 110))
+    options = imset(t_range=(10, 30), y_range=(10, 110), x_range=(10, 110))
     data, dim_order, metadata = lazyload(file_path, options)
     assert data.shape == (20, 100, 100, 3)
     assert dim_order in ["TXYC", "ZXYC"]
@@ -115,7 +115,7 @@ def test_load_partial_video(test_data_dir: Path) -> None:
     """Test loading a partial video file."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.avi"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(t_range=(5, 25), y_range=(10, 110), x_range=(10, 110))
+    options = imset(t_range=(5, 25), y_range=(10, 110), x_range=(10, 110))
     data, dim_order, metadata = lazyload(file_path, options)
     assert data.shape == (20, 100, 100, 3)
     assert dim_order == "TXYC"
@@ -170,9 +170,7 @@ def test_load_with_options_5d(test_data_dir: Path) -> None:
     """Test loading a 5D TIFF file with options."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.tiff"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(
-        t_range=(5, 15), z_range=(2, 8), y_range=(10, 110), x_range=(10, 110)
-    )
+    options = imset(t_range=(5, 15), z_range=(2, 8), y_range=(10, 110), x_range=(10, 110))
     data, dim_order, metadata = lazyload(file_path, options)
     assert data.shape == (10, 6, 100, 100, 3)
     assert dim_order == "TZXYC"
@@ -182,7 +180,7 @@ def test_load_2d_grayscale_video(test_data_dir: Path) -> None:
     """Test loading a 2D grayscale video file."""
     file_path = test_data_dir / "test_3d_TXY_50x128x128_grayscale.avi"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(target_order="TXY")
+    options = imset(target_order="TXY")
     data, dim_order, metadata = lazyload(file_path, options)
     assert data.shape == (50, 128, 128)
     assert dim_order == "TXY"
@@ -192,7 +190,7 @@ def test_load_partial_5d_hdf5(test_data_dir: Path) -> None:
     """Test loading a partial 5D HDF5 file."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.h5"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(
+    options = imset(
         t_range=(5, 15),
         z_range=(2, 8),
         y_range=(10, 110),
@@ -278,7 +276,7 @@ def test_load_zarr_with_options(test_data_dir: Path) -> None:
     """Test loading a 5D Zarr file with options."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.zarr"
     assert file_path.exists(), f"File not found: {file_path}"
-    options = configure_load_options(
+    options = imset(
         t_range=(5, 15),
         z_range=(2, 8),
         y_range=(10, 110),
@@ -295,7 +293,7 @@ def test_load_2d_grayscale_image_folder(test_data_dir: Path) -> None:
     """Test loading a 2D grayscale image folder."""
     folder_path = test_data_dir / "test_2d_XY_128x128_folder"
     assert folder_path.exists(), f"Folder not found: {folder_path}"
-    options = configure_load_options(target_order="TXY")
+    options = imset(target_order="TXY")
     data, dim_order, metadata = lazyload(folder_path, options)
     assert data.shape == (50, 128, 128)
     assert dim_order == "TXY"
@@ -306,7 +304,7 @@ def test_load_3d_rgb_image_folder(test_data_dir: Path) -> None:
     """Test loading a 3D RGB image folder."""
     folder_path = test_data_dir / "test_3d_XYC_128x128x3_folder"
     assert folder_path.exists(), f"Folder not found: {folder_path}"
-    options = configure_load_options(target_order="TXYC")
+    options = imset(target_order="TXYC")
     data, dim_order, metadata = lazyload(folder_path, options)
     assert data.shape == (50, 128, 128, 3)
     assert dim_order == "TXYC"
@@ -317,9 +315,7 @@ def test_load_partial_2d_grayscale_image_folder(test_data_dir: Path) -> None:
     """Test loading a partial 2D grayscale image folder."""
     folder_path = test_data_dir / "test_2d_XY_128x128_folder"
     assert folder_path.exists(), f"Folder not found: {folder_path}"
-    options = configure_load_options(
-        t_range=(10, 30), y_range=(10, 110), x_range=(10, 110), target_order="TXY"
-    )
+    options = imset(t_range=(10, 30), y_range=(10, 110), x_range=(10, 110), target_order="TXY")
     data, dim_order, metadata = lazyload(folder_path, options)
     assert data.shape == (20, 100, 100)
     assert dim_order == "TXY"
@@ -329,7 +325,7 @@ def test_load_partial_3d_rgb_image_folder(test_data_dir: Path) -> None:
     """Test loading a partial 3D RGB image folder."""
     folder_path = test_data_dir / "test_3d_XYC_128x128x3_folder"
     assert folder_path.exists(), f"Folder not found: {folder_path}"
-    options = configure_load_options(
+    options = imset(
         t_range=(10, 30),
         y_range=(10, 110),
         x_range=(10, 110),
@@ -406,7 +402,7 @@ def test_load_partial_hdf5_multi_dataset(test_data_dir: Path) -> None:
     file_path = test_data_dir / "multi_dataset.h5"
     assert file_path.exists(), f"File not found: {file_path}"
 
-    options = configure_load_options(
+    options = imset(
         group="group1",
         dataset="dataset4",
         t_range=(5, 15),
@@ -425,7 +421,7 @@ def test_load_partial_zarr_multi_dataset(test_data_dir: Path) -> None:
     file_path = test_data_dir / "multi_dataset.zarr"
     assert file_path.exists(), f"File not found: {file_path}"
 
-    options = configure_load_options(
+    options = imset(
         group="group2",
         dataset="dataset6",
         t_range=(5, 15),

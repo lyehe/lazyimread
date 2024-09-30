@@ -15,9 +15,9 @@ from .lazyimread import (
     FileFormatError,
     LazyImReadError,
     LoadOptions,
-    configure_load_options,
     imread,
     imsave,
+    imset,
     imwrite,
     lazyload,
     load,
@@ -33,7 +33,7 @@ from .saving_utils import (
 
 __all__ = [
     "LoadOptions",
-    "configure_load_options",
+    "imset",
     "imread",
     "load",
     "lazyload",

@@ -26,7 +26,7 @@ def test_data_dir(tmp_path_factory):
     shutil.rmtree(test_dir, ignore_errors=True)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_2d_tiff(test_data_dir: Path) -> None:
     """Test asynchronous loading of a 2D TIFF file."""
     file_path = test_data_dir / "test_2d_XY_128x128.tiff"
@@ -36,7 +36,7 @@ async def test_async_load_2d_tiff(test_data_dir: Path) -> None:
     assert dim_order == "XY"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_3d_tiff_time_series(test_data_dir: Path) -> None:
     """Test asynchronous loading of a 3D TIFF time series."""
     file_path = test_data_dir / "test_3d_TXY_50x128x128.tiff"
@@ -46,7 +46,7 @@ async def test_async_load_3d_tiff_time_series(test_data_dir: Path) -> None:
     assert dim_order in ["TXY", "ZXY"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_4d_tiff(test_data_dir: Path) -> None:
     """Test asynchronous loading of a 4D TIFF file."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.tiff"
@@ -56,7 +56,7 @@ async def test_async_load_4d_tiff(test_data_dir: Path) -> None:
     assert dim_order in ["TXYC", "ZXYC"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_with_options(test_data_dir: Path) -> None:
     """Test asynchronous loading with specific load options."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.tiff"
@@ -67,7 +67,7 @@ async def test_async_load_with_options(test_data_dir: Path) -> None:
     assert dim_order in ["TXYC", "ZXYC"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_5d_hdf5(test_data_dir: Path) -> None:
     """Test asynchronous loading of a 5D HDF5 file."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.h5"
@@ -77,7 +77,7 @@ async def test_async_load_5d_hdf5(test_data_dir: Path) -> None:
     assert dim_order == "TZXYC"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_zarr(test_data_dir: Path) -> None:
     """Test asynchronous loading of a Zarr file."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.zarr"
@@ -88,7 +88,7 @@ async def test_async_load_zarr(test_data_dir: Path) -> None:
     assert dim_order in ["TXYC", "ZXYC"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_video(test_data_dir: Path) -> None:
     """Test asynchronous loading of a video file."""
     file_path = test_data_dir / "test_4d_TXYC_50x128x128x3.avi"
@@ -98,7 +98,7 @@ async def test_async_load_video(test_data_dir: Path) -> None:
     assert dim_order == "TXYC"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_image_folder(test_data_dir: Path) -> None:
     """Test asynchronous loading of an image folder."""
     folder_path = test_data_dir / "test_2d_XY_128x128_folder"
@@ -109,7 +109,7 @@ async def test_async_load_image_folder(test_data_dir: Path) -> None:
     assert dim_order == "TXY"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_partial_5d_hdf5(test_data_dir: Path) -> None:
     """Test asynchronous loading of a partial 5D HDF5 file."""
     file_path = test_data_dir / "test_5d_TZCYX_50x50x128x128x3.h5"
@@ -126,7 +126,7 @@ async def test_async_load_partial_5d_hdf5(test_data_dir: Path) -> None:
     assert dim_order == "TZXYC"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_hdf5_multi_dataset(test_data_dir: Path) -> None:
     """Test asynchronous loading of a multi-dataset HDF5 file."""
     file_path = test_data_dir / "multi_dataset.h5"
@@ -138,7 +138,7 @@ async def test_async_load_hdf5_multi_dataset(test_data_dir: Path) -> None:
     assert dim_order == "TZXYC"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_zarr_multi_dataset(test_data_dir: Path) -> None:
     """Test asynchronous loading of a multi-dataset Zarr file."""
     file_path = test_data_dir / "multi_dataset.zarr"
@@ -150,7 +150,7 @@ async def test_async_load_zarr_multi_dataset(test_data_dir: Path) -> None:
     assert dim_order == "TZXYC"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_async_load_multiple_files_concurrently(test_data_dir: Path) -> None:
     """Test asynchronous loading of multiple files concurrently."""
     file_paths = [

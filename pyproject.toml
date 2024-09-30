@@ -4,15 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lazyimread"
-version = "0.1.1"
+version = "0.1.2"
 description = "A lazy image reading library for various file formats"
 authors = [{ name = "Yehe Liu", email = "yehe@case.edu" }]
-license = { text = "The Unlicense (Unlicense)" }
+license = { text = "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication" }
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: The Unlicense (Unlicense)",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -31,7 +31,7 @@ dependencies = [
 
 
 [project.optional-dependencies]
-dev = ["pytest", "matplotlib", "ruff", "pytest-asyncio"]
+dev = ["pytest", "matplotlib", "ruff", "pytest-asyncio", "tox", "pre-commit"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/lazyimread"]
@@ -40,6 +40,7 @@ packages = ["src/lazyimread"]
 pythonpath = [".", "src"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff]
 line-length = 100

@@ -1,5 +1,6 @@
 """Utility functions for handling image data dimensions."""
 
+from dataclasses import dataclass
 from enum import Enum, auto
 from logging import getLogger
 
@@ -44,6 +45,16 @@ class DefaultDimensionOrder(Enum):
         return self.value
 
 
+@dataclass
+class DimensionRule:
+    """Class to represent a dimension rule for image data."""
+
+    max_channels: int = 32
+    min_xy: int = 1024
+    min_time: int = 33
+    min_z: int = 64
+
+
 def translate_dimension_names(order: str) -> str:
     """Translate F, D, W, H to T, Z, X, Y respectively.
 
@@ -68,24 +79,61 @@ def translate_dimension_names(order: str) -> str:
     return "".join(translated)
 
 
-def predict_dimension_order(data: np.ndarray | tuple[int, ...]) -> str:
-    """Predict the original dimension order based on array shape."""
+def predict_dimension_order(
+    data: np.ndarray | tuple[int, ...], rule: DimensionRule | None = None
+) -> str:
+    """Predict the original dimension order based on array shape.
+
+    This function uses the following rules to predict the dimension order:
+    - 2D: Always assumed to be XY
+    - 3D:
+        - If last dimension <= max_channels, assumed to be XYC
+        - Else if first dimension >= min_time, assumed to be TXY
+        - Otherwise, assumed to be ZXY
+    - 4D:
+        - If last dimension <= max_channels:
+            - If first dimension >= min_time, assumed to be TXYC
+            - Otherwise, assumed to be ZXYC
+        - Else, assumed to be TZXY
+    - 5D: Always assumed to be TZXYC
+
+    If your data does not fit these rules, you can use the `rearrange_dimensions`
+    function to rearrange the dimensions into the desired order.
+
+    :param data: Input data as numpy array or tuple of shape
+    :param rule: DimensionRule object with threshold values, if None, default values are used
+    :return: Predicted dimension order as a string
+    :raises ValueError: If the number of dimensions is not supported (not 2-5)
+    """
     shape = data.shape if isinstance(data, np.ndarray) else data
     dims = len(shape)
+    rule = rule or DimensionRule()
 
     if dims == 2:
         return "XY"
     elif dims == 3:
-        if shape[-1] in (3, 4):  # Likely RGB or RGBA
+        if shape[-1] <= rule.max_channels:
+            logger.debug("Predicting dimension order: XYC")
             return "XYC"
+        elif shape[0] >= rule.min_time:
+            logger.debug("Predicting dimension order: TXY")
+            return "TXY"
         else:
-            return "TXY"  # Assume time series by default for 3D
+            logger.debug("Predicting dimension order: ZXY")
+            return "ZXY"
     elif dims == 4:
-        if shape[-1] in (3, 4):  # Likely RGB or RGBA
-            return "TXYC"
+        if shape[-1] <= rule.max_channels:
+            if shape[0] >= rule.min_time:
+                logger.debug("Predicting dimension order: TXYC")
+                return "TXYC"
+            else:
+                logger.debug("Predicting dimension order: ZXYC")
+                return "ZXYC"
         else:
+            logger.debug("Predicting dimension order: TZXY")
             return "TZXY"
     elif dims == 5:
+        logger.debug("Predicting dimension order: TZXYC")
         return "TZXYC"
     else:
         logger.error(f"Unsupported number of dimensions: {dims}")

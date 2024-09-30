@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from lazyimread import LoadOptions, imset, lazyload
-from tests.dummy_data_generator import generate_test_data
+from lazyimread.dummy_data_generator import generate_test_data
 
 
 @pytest.fixture(scope="module")

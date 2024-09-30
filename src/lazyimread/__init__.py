@@ -6,6 +6,9 @@ from .dimension_utils import (
     rearrange_dimensions,
     translate_dimension_names,
 )
+from .dummy_data_generator import (
+    generate_test_data,
+)
 from .gui_utils import (
     gdir,
     gdirload,
@@ -68,6 +71,7 @@ __all__ = [
     "gset",
     "gsetload",
     "gsetdirload",
+    "generate_test_data",
 ]
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"

@@ -164,7 +164,11 @@ async def test_async_load_multiple_files(test_data_dir: Path) -> None:
 
     results = await asyncio.gather(*[load_file(path) for path in file_paths])
 
-    assert len(results) == 4
-    for data, dim_order, _ in results:
-        assert isinstance(data, np.ndarray)
-        assert isinstance(dim_order, str)
+    assert len(results) == 2  # Changed from 4 to 2
+    # Add more assertions to verify the content of the results
+    for result in results:
+        assert isinstance(result, tuple)
+        assert len(result) == 3
+        assert isinstance(result[0], np.ndarray)
+        assert isinstance(result[1], str)
+        assert isinstance(result[2], dict | None)

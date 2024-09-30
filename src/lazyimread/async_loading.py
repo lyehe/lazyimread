@@ -18,7 +18,7 @@ from .lazyimread import (
 logger = getLogger(__name__)
 
 
-async def async_lazyload(
+async def aload(
     input_path: Path,
     options: LoadOptions | None = None,
 ) -> tuple[np.ndarray, str, dict | None]:
@@ -59,31 +59,3 @@ async def async_lazyload(
         final_order = current_order
 
     return data, str(final_order), metadata
-
-
-async def async_load(
-    input_path: Path,
-    options: LoadOptions | None = None,
-) -> tuple[np.ndarray, str, dict | None]:
-    """Asynchronous alias for async_lazyload function, providing a shorter name for convenience.
-
-    :param input_path: Path to the input file
-    :param options: LoadOptions instance with loading parameters
-    :return: Tuple of (data, dimension order, metadata)
-    """
-    return await async_lazyload(input_path, options)
-
-
-async def async_imread(
-    input_path: Path,
-    options: LoadOptions | None = None,
-) -> tuple[np.ndarray, str, dict | None]:
-    """Asynchronous alias for async_lazyload function, mimicking the common imread function name.
-
-    This allows for easier transition from other image reading libraries.
-
-    :param input_path: Path to the input file
-    :param options: LoadOptions instance with loading parameters
-    :return: Tuple of (data, dimension order, metadata)
-    """
-    return await async_lazyload(input_path, options)

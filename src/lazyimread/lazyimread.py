@@ -8,6 +8,7 @@ from typing import Any, Literal, TypeVar
 
 import cv2
 import numpy as np
+import yaml
 from h5py import Dataset, File
 from h5py import Group as H5pyGroup
 from tifffile import TiffFile
@@ -90,6 +91,44 @@ def imset(
         dim_order=dim_order,
         target_order=target_order,
     )
+
+
+def save_options(options: LoadOptions, file_path: Path) -> None:
+    """Save LoadOptions to a YAML file.
+
+    :param options: LoadOptions instance to save
+    :param file_path: Path to save the YAML file
+    """
+    try:
+        data = {
+            "ranges": options.ranges,
+            "dataset": options.dataset,
+            "group": options.group,
+            "dim_order": options.dim_order,
+            "target_order": options.target_order,
+        }
+        with file_path.open("w") as f:
+            yaml.safe_dump(data, f, default_flow_style=False)
+        logger.info(f"LoadOptions saved to {file_path}")
+    except Exception as err:
+        logger.exception(f"Error saving LoadOptions: {err}")
+        raise LazyImReadError(f"Error saving LoadOptions: {err}") from err
+
+
+def load_options(file_path: Path) -> LoadOptions:
+    """Load LoadOptions from a YAML file.
+
+    :param file_path: Path to the YAML file
+    :return: LoadOptions instance
+    """
+    try:
+        with file_path.open("r") as f:
+            data = yaml.safe_load(f)
+        logger.info(f"LoadOptions loaded from {file_path}")
+        return LoadOptions(**data)
+    except Exception as err:
+        logger.exception(f"Error loading LoadOptions: {err}")
+        raise LazyImReadError(f"Error loading LoadOptions: {err}") from err
 
 
 class DataLoader(ABC):

@@ -1,14 +1,17 @@
 """Lazy image reading and writing library."""
 
-from .async_loading import (
-    async_imread,
-    async_lazyload,
-    async_load,
-)
+from .async_loading import aload
 from .dimension_utils import (
     predict_dimension_order,
     rearrange_dimensions,
     translate_dimension_names,
+)
+from .gui_load import (
+    gload,
+    gpath,
+    gsave,
+    gset,
+    gsetload,
 )
 from .lazyimread import (
     DatasetNotFoundError,
@@ -21,7 +24,9 @@ from .lazyimread import (
     imwrite,
     lazyload,
     load,
+    load_options,
     save,
+    save_options,
 )
 from .saving_utils import (
     SaveFactory,
@@ -33,6 +38,8 @@ from .saving_utils import (
 
 __all__ = [
     "LoadOptions",
+    "load_options",
+    "save_options",
     "imset",
     "imread",
     "load",
@@ -46,14 +53,19 @@ __all__ = [
     "LazyImReadError",
     "FileFormatError",
     "DatasetNotFoundError",
-    "async_lazyload",
-    "async_load",
-    "async_imread",
+    "aload",
+    "aload",
+    "aload",
     "SaveFactory",
     "save_folder",
     "save_hdf5",
     "save_tiff",
     "save_zarr",
+    "gpath",
+    "gload",
+    "gset",
+    "gsave",
+    "gsetload",
 ]
 
 __version__ = "0.1.1"

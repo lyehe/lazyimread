@@ -1,6 +1,8 @@
 # Lazyimread
 
-Lazyimread is a Python library that simplifies working with large, multi-dimensional image datasets. Using a single function call, it can lazily load various image file formats such as TIFF, HDF5, Zarr, 2D image sequences, and video files without writing custom code for each format. It handles 2-5D TZXYC data with a consistent API and some automation for automatic dimension order detection and rearrangement. It also includes a simple saving interface. Whether you're dealing with microscopy data, satellite imagery, or video analysis, Lazyimread can significantly streamline your workflow and make handling complex image datasets more intuitive and efficient.
+Lazyimread is a Python library that simplifies working with large, multi-dimensional image datasets. Using a single function call (e.g., `load`, `imread`, or `ll`), it can load various image file formats such as TIFF, HDF5, Zarr, 2D image sequences, and video files without writing boilerplate code for each format. It handles 2-5D TZXYC data with a consistent API and some automation for automatic dimension order detection and rearrangement. It also includes several simple, boilerplate saving interfaces.
+
+Whether you're dealing with microscopy data, satellite imagery, or video analysis, Lazyimread can significantly streamline your workflow and make handling complex image datasets more intuitive and efficient.
 
 ![CI](https://github.com/lyehe/lazyimread/workflows/CI/badge.svg)
 [![PyPI version](https://badge.fury.io/py/lazyimread.svg)](https://badge.fury.io/py/lazyimread)
@@ -84,9 +86,9 @@ save_tiff(data, 'output.tiff', dim_order='TZXYC')
 ### 5. Asynchronous loading:
 
 ```python
-from lazyimread import async_load
+from lazyimread import aload
 
-data, dim_order, metadata = async_load('path/to/your/file.tiff')
+data, dim_order, metadata = aload('path/to/your/file.tiff')
 ```
 
 ### License:

@@ -1,7 +1,7 @@
 # Lazyimread
 
 ![CI](https://github.com/lyehe/lazyimread/workflows/CI/badge.svg)
-[![PyPI version](https://badge.fury.io/py/lazyimread.svg)](https://badge.fury.io/py/lazyimread)
+[!![PyPI - Version](https://img.shields.io/pypi/v/lazyimread)](https://pypi.org/project/lazyimread/)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/lazyimread.svg)](https://pypi.org/project/lazyimread/)
 
@@ -50,7 +50,7 @@ Or feel free to copy and paste the code into your project / data analysis pipeli
 
 You can find more examples in the [examples.ipynb](https://github.com/lyehe/lazyimread/blob/main/example.ipynb)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://githubtocolab.com/lyehe/lazyimread/blob/main/example.ipynb)
+Try it here: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://githubtocolab.com/lyehe/lazyimread/blob/main/example.ipynb)
 
 ### 1. Basic loading:
 

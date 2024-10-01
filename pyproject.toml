@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lazyimread"
-version = "0.1.4"
+version = "0.1.5"
 description = "A lazy image reading library for various file formats"
 authors = [{ name = "Yehe Liu", email = "yehe@case.edu" }]
 license = { text = "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication" }
@@ -39,7 +39,7 @@ dev = [
     "tox",
     "pre-commit",
     "build",
-    "twine",  # for uploading to PyPI
+    "twine",
 ]
 
 [tool.hatch.build.targets.wheel]

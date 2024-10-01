@@ -74,4 +74,4 @@ __all__ = [
     "generate_test_data",
 ]
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"

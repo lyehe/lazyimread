@@ -49,7 +49,7 @@ class DefaultDimensionOrder(Enum):
 class DimensionRule:
     """Class to represent a dimension rule for image data."""
 
-    max_channels: int = 32
+    max_channels: int = 8
     min_xy: int = 1024
     min_time: int = 33
     min_z: int = 64
@@ -112,15 +112,19 @@ def predict_dimension_order(
     if dims == 2:
         return "XY"
     elif dims == 3:
-        if shape[-1] <= rule.max_channels:
-            logger.debug("Predicting dimension order: XYC")
-            return "XYC"
-        elif shape[0] >= rule.min_time:
+        if any(dim <= rule.max_channels for dim in shape):
+            channel_dim = shape.index(min(shape))
+            order = ["X", "Y", "C"]
+            order.insert(channel_dim, order.pop())
+            predicted_order = "".join(order)
+            logger.debug(f"Predicting dimension order: {predicted_order}")
+            return predicted_order
+        if shape[0] >= rule.min_time:
             logger.debug("Predicting dimension order: TXY")
             return "TXY"
         else:
             logger.debug("Predicting dimension order: ZXY")
-            return "ZXY"
+        return "ZXY"
     elif dims == 4:
         if shape[-1] <= rule.max_channels:
             if shape[0] >= rule.min_time:
@@ -129,12 +133,36 @@ def predict_dimension_order(
             else:
                 logger.debug("Predicting dimension order: ZXYC")
                 return "ZXYC"
+        elif shape[0] <= rule.max_channels:
+            if shape[1] >= rule.min_time:
+                logger.debug("Predicting dimension order: CTXY")
+                return "CTXY"
+            else:
+                logger.debug("Predicting dimension order: CZXY")
+                return "CZXY"
+        elif shape[1] < rule.max_channels:
+            if shape[0] >= rule.min_time:
+                logger.debug("Predicting dimension order: TCXY")
+                return "TCXY"
+            else:
+                logger.debug("Predicting dimension order: ZCXY")
+                return "ZCXY"
         else:
             logger.debug("Predicting dimension order: TZXY")
             return "TZXY"
     elif dims == 5:
-        logger.debug("Predicting dimension order: TZXYC")
-        return "TZXYC"
+        if shape[-1] <= rule.max_channels:
+            logger.debug("Predicting dimension order: TZXYC")
+            return "TZXYC"
+        elif shape[0] <= rule.max_channels:
+            logger.debug("Predicting dimension order: CTZXY")
+            return "CTZXY"
+        elif shape[1] <= rule.max_channels:
+            logger.debug("Predicting dimension order: TCZXY")
+            return "TCZXY"
+        else:
+            logger.debug("Predicting dimension order: TZCXY")
+            return "TZCXY"
     else:
         logger.error(f"Unsupported number of dimensions: {dims}")
         raise ValueError(f"Unsupported number of dimensions: {dims}")

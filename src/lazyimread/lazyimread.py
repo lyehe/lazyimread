@@ -18,7 +18,7 @@ from zarr import Group as ZarrGroup
 from zarr import open as zarr_open
 
 from .dimension_utils import predict_dimension_order, rearrange_dimensions
-from .saving_utils import MetadataSaveOption, SaveFactory
+from .saving_utils import SaveFactory
 
 # Set up logging
 logger = getLogger(__name__)
@@ -727,8 +727,7 @@ def imread(
 def imsave(
     data: np.ndarray,
     output_path: Path,
-    dim_order: str,
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
+    dim_order: str | None = None,
     metadata: dict | None = None,
 ) -> None:
     """Save data to various file formats.
@@ -736,36 +735,29 @@ def imsave(
     :param data: numpy array to save
     :param output_path: Path to save the output
     :param dim_order: Dimension order of the data
-    :param save_metadata: Whether to save metadata
     :param metadata: Optional metadata to save
     """
     saver = SaveFactory.get_saver(output_path)
-    saver(data, output_path, dim_order, save_metadata, metadata)
+    dim_order = dim_order or predict_dimension_order(data)
+    saver(data, output_path, dim_order, metadata)
 
 
 def imwrite(
     data: np.ndarray,
     output_path: Path,
-    dim_order: str,
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
-    metadata: dict | None = None,
 ) -> None:
-    """Alias for imsave function, mimicking the common imwrite function name.
+    """Alias for imsave function, reduced options.
 
     :param data: numpy array to save
     :param output_path: Path to save the output
-    :param dim_order: Dimension order of the data
-    :param save_metadata: Whether to save metadata
-    :param metadata: Optional metadata to save
     """
-    return imsave(data, output_path, dim_order, save_metadata, metadata)
+    return imsave(data, output_path)
 
 
 def save(
     data: np.ndarray,
     output_path: Path,
     dim_order: str,
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
     metadata: dict | None = None,
 ) -> None:
     """Alias for imsave function, providing a shorter name for convenience.
@@ -776,7 +768,7 @@ def save(
     :param save_metadata: Whether to save metadata
     :param metadata: Optional metadata to save
     """
-    return imsave(data, output_path, dim_order, save_metadata, metadata)
+    return imsave(data, output_path, dim_order, metadata)
 
 
 class LazyImReadError(Exception):

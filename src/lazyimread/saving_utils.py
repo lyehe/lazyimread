@@ -1,7 +1,6 @@
 """Utility functions for saving data."""
 
 from collections.abc import Callable
-from enum import Enum, auto
 from json import dump
 from logging import getLogger
 from pathlib import Path
@@ -15,18 +14,10 @@ from tifffile import imwrite
 logger = getLogger(__name__)
 
 
-class MetadataSaveOption(Enum):
-    """Enum for metadata saving options."""
-
-    SAVE = auto()
-    DONT_SAVE = auto()
-
-
 def save_tiff(
     data: np.ndarray,
     output_path: Path,
     dim_order: str,
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
     metadata: dict | None = None,
 ) -> None:
     """Save data as a TIFF file.
@@ -40,7 +31,7 @@ def save_tiff(
     logger.info(f"Saving TIFF file to {output_path}")
     imwrite(str(output_path), data, metadata={"axes": dim_order})
 
-    if save_metadata == MetadataSaveOption.SAVE and metadata:
+    if metadata:
         metadata_path = output_path.with_suffix(".json")
         logger.info(f"Saving metadata to {metadata_path}")
         with open(metadata_path, "w") as f:
@@ -52,7 +43,6 @@ def save_hdf5(
     output_path: Path,
     dataset_name: str = "data",
     dim_order: str = "",
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
     metadata: dict | None = None,
 ) -> None:
     """Save data as an HDF5 file.
@@ -70,7 +60,7 @@ def save_hdf5(
         if dim_order:
             dataset.attrs["dim_order"] = dim_order
 
-        if save_metadata == MetadataSaveOption.SAVE and metadata:
+        if metadata:
             for key, value in metadata.items():
                 dataset.attrs[key] = value
 
@@ -80,7 +70,6 @@ def save_zarr(
     output_path: Path,
     group_name: str = "data",
     dim_order: str = "",
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
     metadata: dict | None = None,
 ) -> None:
     """Save data as a Zarr file.
@@ -98,7 +87,7 @@ def save_zarr(
     if dataset:
         if dim_order:
             dataset.attrs["dim_order"] = dim_order
-        if save_metadata == MetadataSaveOption.SAVE and metadata:
+        if metadata:
             for key, value in metadata.items():
                 dataset.attrs[key] = value
 
@@ -106,7 +95,6 @@ def save_zarr(
 def save_folder(
     data: np.ndarray,
     output_path: Path,
-    save_metadata: MetadataSaveOption = MetadataSaveOption.DONT_SAVE,
     metadata: dict | None = None,
 ) -> None:
     """Save data as a folder of images.
@@ -122,7 +110,7 @@ def save_folder(
         img_path = output_path / f"{i:04d}.tiff"
         imwrite(str(img_path), img)
 
-    if save_metadata == MetadataSaveOption.SAVE and metadata:
+    if metadata:
         metadata_path = output_path / "metadata.json"
         logger.info(f"Saving metadata to {metadata_path}")
         with open(metadata_path, "w") as f:

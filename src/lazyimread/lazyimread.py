@@ -663,17 +663,18 @@ class DataLoaderFactory:
             raise FileFormatError(f"Unsupported input format: {file_path}")
 
     @staticmethod
-    def _is_zarr_directory(path: Path) -> bool:
+    def _is_zarr_directory(path: FilePathType) -> bool:
         """Check if the given path is a Zarr directory.
 
         :param path: Path to check
         :return: True if the path is a Zarr directory, False otherwise
         """
+        path = Path(path)
         return path.is_dir() and any(f.name in (".zarray", ".zgroup") for f in path.iterdir())
 
 
 def lazyload(
-    input_path: Path,
+    input_path: FilePathType,
     options: LoadOptions | None = None,
 ) -> tuple[np.ndarray, str, dict | None]:
     """Main function. Load input data from various file formats.

@@ -93,7 +93,7 @@ def imset(
     )
 
 
-def save_options(options: LoadOptions, file_path: Path) -> None:
+def save_options(options: LoadOptions, file_path: FilePathType) -> None:
     """Save LoadOptions to a YAML file.
 
     :param options: LoadOptions instance to save
@@ -107,6 +107,7 @@ def save_options(options: LoadOptions, file_path: Path) -> None:
             "dim_order": options.dim_order,
             "target_order": options.target_order,
         }
+        file_path = Path(file_path)
         with file_path.open("w") as f:
             yaml.safe_dump(data, f, default_flow_style=False)
         logger.info(f"LoadOptions saved to {file_path}")
@@ -115,13 +116,14 @@ def save_options(options: LoadOptions, file_path: Path) -> None:
         raise LazyImReadError(f"Error saving LoadOptions: {err}") from err
 
 
-def load_options(file_path: Path) -> LoadOptions:
+def load_options(file_path: FilePathType) -> LoadOptions:
     """Load LoadOptions from a YAML file.
 
     :param file_path: Path to the YAML file
     :return: LoadOptions instance
     """
     try:
+        file_path = Path(file_path)
         with file_path.open("r") as f:
             data = yaml.safe_load(f)
         logger.info(f"LoadOptions loaded from {file_path}")
@@ -136,7 +138,7 @@ class DataLoader(ABC):
 
     @abstractmethod
     def load(
-        self, file_path: Path, options: LoadOptions
+        self, file_path: FilePathType, options: LoadOptions
     ) -> tuple[np.ndarray, str | None, dict | None]:
         """Load data from a file.
 
@@ -192,7 +194,7 @@ class ImageFolderLoader(DataLoader):
     )
 
     def load(
-        self, folder_path: Path, options: LoadOptions
+        self, folder_path: FilePathType, options: LoadOptions
     ) -> tuple[np.ndarray, str | None, dict | None]:
         """Load images from a folder.
 
@@ -202,7 +204,11 @@ class ImageFolderLoader(DataLoader):
         """
         logger.info(f"Loading images from folder: {folder_path}")
         image_files = sorted(
-            [f for f in folder_path.iterdir() if f.suffix.lower() in self.supported_extensions]
+            [
+                f
+                for f in Path(folder_path).iterdir()
+                if f.suffix.lower() in self.supported_extensions
+            ]
         )
         if not image_files:
             logger.error(f"No image files found in folder: {folder_path}")
@@ -266,7 +272,7 @@ class VideoLoader(DataLoader):
     """Loader for video files."""
 
     def load(
-        self, video_path: Path, options: LoadOptions
+        self, video_path: FilePathType, options: LoadOptions
     ) -> tuple[np.ndarray, str, dict[str, Any] | None]:
         """Load frames from a video file.
 
@@ -276,6 +282,7 @@ class VideoLoader(DataLoader):
         """
         logger.info(f"Loading video from: {video_path}")
         is_grayscale: bool = options.target_order == "TXY"
+        video_path = Path(video_path)
 
         try:
             cap = cv2.VideoCapture(str(video_path))
@@ -331,7 +338,7 @@ class TiffLoader(DataLoader):
     """Loader for TIFF files."""
 
     def load(
-        self, file_path: Path, options: LoadOptions
+        self, file_path: FilePathType, options: LoadOptions
     ) -> tuple[np.ndarray, str | None, dict | None]:
         """Load data from a TIFF or OME-TIFF file.
 
@@ -341,6 +348,7 @@ class TiffLoader(DataLoader):
         """
         logger.info(f"Loading TIFF file: {file_path}")
         try:
+            file_path = Path(file_path)
             with TiffFile(str(file_path)) as tif:
                 return (
                     self._load_ome_tiff(tif, options)
@@ -408,7 +416,9 @@ class TiffLoader(DataLoader):
 class HDF5Loader(DataLoader):
     """Loader for HDF5 files."""
 
-    def load(self, file_path: Path, options: LoadOptions) -> tuple[np.ndarray, str, dict | None]:
+    def load(
+        self, file_path: FilePathType, options: LoadOptions
+    ) -> tuple[np.ndarray, str, dict | None]:
         """Load data from an HDF5 file.
 
         :param file_path: Path to the HDF5 file
@@ -417,6 +427,7 @@ class HDF5Loader(DataLoader):
         """
         logger.info(f"Loading HDF5 file: {file_path}")
         try:
+            file_path = Path(file_path)
             with File(file_path, "r") as f:
                 data, dim_order, metadata = self._get_data(f, options)
                 slices = self._calculate_slices(data.shape, options)
@@ -518,7 +529,7 @@ class ZarrLoader(DataLoader):
     """Loader for Zarr files."""
 
     def load(
-        self, file_path: Path, options: LoadOptions
+        self, file_path: FilePathType, options: LoadOptions
     ) -> tuple[np.ndarray, str | None, dict[str, Any] | None]:
         """Load data from a Zarr file.
 
@@ -528,6 +539,7 @@ class ZarrLoader(DataLoader):
         """
         logger.info(f"Loading Zarr file: {file_path}")
         try:
+            file_path = Path(file_path)
             root = zarr_open(str(file_path), mode="r")
             data_array = self._get_data(root, options)
             metadata = dict(data_array.attrs)
@@ -620,15 +632,18 @@ class DataLoaderFactory:
     """Factory class for creating appropriate DataLoader instances."""
 
     @staticmethod
-    def get_loader(file_path: Path) -> DataLoader:
+    def get_loader(file_path: FilePathType) -> DataLoader:
         """Get the appropriate loader based on the file path.
 
         :param file_path: Path to the file or directory
         :return: Appropriate DataLoader instance
         """
         logger.debug(f"Getting loader for {file_path}")
+        file_path = Path(file_path)
 
-        if file_path.suffix.lower() == ".zarr" or DataLoaderFactory._is_zarr_directory(file_path):
+        if file_path.suffix.lower() == ".zarr" or DataLoaderFactory._is_zarr_directory(
+            Path(file_path)
+        ):
             logger.info("Using ZarrLoader")
             return ZarrLoader()
         elif file_path.is_dir():
@@ -696,7 +711,7 @@ def lazyload(
 
 
 def load(
-    input_path: Path,
+    input_path: FilePathType,
     options: LoadOptions | None = None,
 ) -> tuple[np.ndarray, str, dict | None]:
     """Alias for lazyload function, providing a shorter name for convenience.
@@ -705,11 +720,11 @@ def load(
     :param options: LoadOptions instance with loading parameters
     :return: Tuple of (data, dimension order, metadata)
     """
-    return lazyload(input_path, options)
+    return lazyload(Path(input_path), options)
 
 
 def imread(
-    input_path: Path,
+    input_path: FilePathType,
     options: LoadOptions | None = None,
 ) -> np.ndarray:
     """Alias for lazyload function, mimicking the common imread function name.
@@ -720,13 +735,13 @@ def imread(
     :param options: LoadOptions instance with loading parameters
     :return: Numpy array containing the loaded image data
     """
-    data, _, _ = lazyload(input_path, options)
+    data, _, _ = lazyload(Path(input_path), options)
     return data
 
 
 def imsave(
     data: np.ndarray,
-    output_path: Path,
+    output_path: FilePathType,
     dim_order: str | None = None,
     metadata: dict | None = None,
 ) -> None:
@@ -737,6 +752,7 @@ def imsave(
     :param dim_order: Dimension order of the data
     :param metadata: Optional metadata to save
     """
+    output_path = Path(output_path)
     saver = SaveFactory.get_saver(output_path)
     dim_order = dim_order or predict_dimension_order(data)
     saver(data, output_path, dim_order, metadata)
@@ -744,7 +760,7 @@ def imsave(
 
 def imwrite(
     data: np.ndarray,
-    output_path: Path,
+    output_path: FilePathType,
 ) -> None:
     """Alias for imsave function, reduced options.
 
@@ -756,7 +772,7 @@ def imwrite(
 
 def save(
     data: np.ndarray,
-    output_path: Path,
+    output_path: FilePathType,
     dim_order: str,
     metadata: dict | None = None,
 ) -> None:

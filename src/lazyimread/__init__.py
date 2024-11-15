@@ -73,3 +73,5 @@ __all__ = [
     "gsetdirload",
     "generate_test_data",
 ]
+
+__version__ = "0.1.7"

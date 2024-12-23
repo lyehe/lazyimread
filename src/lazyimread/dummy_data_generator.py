@@ -9,6 +9,8 @@ import numpy as np
 import tifffile
 import zarr
 
+from .lazyimread import FilePathType
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,22 +34,22 @@ def generate_5d_array(shape: tuple[int, int, int, int, int]) -> np.ndarray:
     return np.random.randint(0, 256, shape, dtype=np.uint8)
 
 
-def save_tiff(data: np.ndarray, output_path: Path) -> None:
+def save_tiff(data: np.ndarray, output_path: FilePathType) -> None:
     """Save a numpy array as a TIFF file."""
     tifffile.imwrite(str(output_path), data)
 
 
-def save_hdf5(data: np.ndarray, output_path: Path, dataset_name: str = "data") -> None:
+def save_hdf5(data: np.ndarray, output_path: FilePathType, dataset_name: str = "data") -> None:
     """Save a numpy array as an HDF5 file."""
     with h5py.File(output_path, "w") as f:
         f.create_dataset(dataset_name, data=data)
 
 
-def save_video(data: np.ndarray, output_path: Path, fps: int = 30) -> None:
+def save_video(data: np.ndarray, output_path: FilePathType, fps: int = 30) -> None:
     """Save a numpy array as a video file, supporting both grayscale and color videos.
 
     :param data: Input numpy array with shape (T, H, W) for grayscale or (T, H, W, 3) for color
-    :param output_path: Path to save the output video file
+    :param output_path: FilePathType to save the output video file
     :param fps: Frames per second for the output video
     """
     if data.ndim not in (3, 4):
@@ -65,11 +67,11 @@ def save_video(data: np.ndarray, output_path: Path, fps: int = 30) -> None:
         out.release()
 
 
-def save_zarr(data: np.ndarray, output_path: Path, dataset_name: str = "data") -> None:
+def save_zarr(data: np.ndarray, output_path: FilePathType, dataset_name: str = "data") -> None:
     """Save a numpy array as a Zarr array.
 
     :param data: Input numpy array
-    :param output_path: Path to save the output Zarr array
+    :param output_path: FilePathType to save the output Zarr array
     :param dataset_name: Name of the dataset within the Zarr array
     """
     store = zarr.DirectoryStore(str(output_path))
@@ -78,15 +80,16 @@ def save_zarr(data: np.ndarray, output_path: Path, dataset_name: str = "data") -
 
 
 def save_image_folder(
-    data: np.ndarray, output_path: Path, prefix: str = "image", file_format: str = "tiff"
+    data: np.ndarray, output_path: FilePathType, prefix: str = "image", file_format: str = "tiff"
 ) -> None:
     """Save a numpy array as a folder of images.
 
     :param data: Input numpy array with shape (T, ...) where T is the number of images
-    :param output_path: Path to save the output folder
+    :param output_path: FilePathType to save the output folder
     :param prefix: Prefix for the image filenames
     :param file_format: Format to save the images (tiff or png)
     """
+    output_path = Path(output_path)
     output_path.mkdir(parents=True, exist_ok=True)
     for i, img in enumerate(data):
         if file_format == "tiff":
@@ -97,10 +100,10 @@ def save_image_folder(
             raise ValueError(f"Unsupported file format: {file_format}")
 
 
-def generate_multi_dataset_hdf5(output_path: Path) -> None:
+def generate_multi_dataset_hdf5(output_path: FilePathType) -> None:
     """Generate an HDF5 file with multiple datasets and groups.
 
-    :param output_path: Path to save the HDF5 file
+    :param output_path: FilePathType to save the HDF5 file
     """
     logger.info(f"Generating multi-dataset HDF5 file: {output_path}")
     with h5py.File(output_path, "w") as f:
@@ -116,10 +119,10 @@ def generate_multi_dataset_hdf5(output_path: Path) -> None:
         group2.create_dataset("dataset6", data=np.random.rand(10, 10, 10, 10, 3))
 
 
-def generate_multi_dataset_zarr(output_path: Path) -> None:
+def generate_multi_dataset_zarr(output_path: FilePathType) -> None:
     """Generate a Zarr file with multiple datasets and groups.
 
-    :param output_path: Path to save the Zarr file
+    :param output_path: FilePathType to save the Zarr file
     """
     logger.info(f"Generating multi-dataset Zarr file: {output_path}")
     root = zarr.open(str(output_path), mode="w")
@@ -138,7 +141,7 @@ def generate_multi_dataset_zarr(output_path: Path) -> None:
 
 
 def generate_test_data(
-    output_dir: Path,
+    output_dir: FilePathType,
     shape: tuple[int, int] = (128, 128),
     z_size: int = 50,
     t_size: int = 50,
@@ -146,13 +149,14 @@ def generate_test_data(
 ) -> None:
     """Generate test data with various dimensions and save in different formats.
 
-    :param output_dir: Path to the directory where test data will be saved
+    :param output_dir: FilePathType to the directory where test data will be saved
     :param shape: tuple of (height, width) for 2D arrays
     :param z_size: Size of the Z dimension for 3D and higher dimensional arrays
     :param t_size: Size of the T (time) dimension for time series data
     :param c_size: Size of the C (channel) dimension for multi-channel data
     """
     logger.info(f"Generating test data in {output_dir}")
+    output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     shape_xy = f"{shape[0]}x{shape[1]}"
     shape_txy = f"{t_size}x{shape[0]}x{shape[1]}"

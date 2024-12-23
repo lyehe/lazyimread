@@ -2,13 +2,13 @@
 
 import asyncio
 from logging import getLogger
-from pathlib import Path
 
 import numpy as np
 
 from .lazyimread import (
     DataLoaderFactory,
     FileFormatError,
+    FilePathType,
     LazyImReadError,
     LoadOptions,
     predict_dimension_order,
@@ -19,16 +19,16 @@ logger = getLogger(__name__)
 
 
 async def aload(
-    input_path: Path,
+    input_path: FilePathType,
     options: LoadOptions | None = None,
 ) -> tuple[np.ndarray, str, dict | None]:
     """Asynchronously load input data from various file formats.
 
-    :param input_path: Path to the input file
+    :param input_path: FilePathType to the input file
     :param options: LoadOptions instance with loading parameters
     :return: Tuple of (data, dimension order, metadata)
     """
-    logger.info(f"Asynchronously loading input from {input_path}")
+    logger.info(f"Asynchronously loading input from {str(input_path)}")
     options = options or LoadOptions()
 
     try:

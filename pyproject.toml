@@ -42,7 +42,7 @@ dev = [
     "twine",
 ]
 
-[tool.hatch.build.targets.wheel]
+[tool.hatch.build]
 packages = ["src/lazyimread"]
 
 [tool.pytest.ini_options]

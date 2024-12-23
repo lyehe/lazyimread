@@ -2,13 +2,13 @@
 
 import asyncio
 from logging import getLogger
+from pathlib import Path
 
 import numpy as np
 
 from .lazyimread import (
     DataLoaderFactory,
     FileFormatError,
-    FilePathType,
     LazyImReadError,
     LoadOptions,
     predict_dimension_order,
@@ -16,6 +16,7 @@ from .lazyimread import (
 )
 
 logger = getLogger(__name__)
+FilePathType = str | Path
 
 
 async def aload(

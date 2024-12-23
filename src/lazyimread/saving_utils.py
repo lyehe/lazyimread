@@ -10,10 +10,9 @@ import zarr
 from h5py import File
 from tifffile import imwrite
 
-from .lazyimread import FilePathType
-
 # Set up logging
 logger = getLogger(__name__)
+FilePathType = str | Path
 
 
 def save_tiff(
